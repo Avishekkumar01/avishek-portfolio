@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Avishek Kumar · Where Enterprise Systems Meet AI</title>
+<meta name="description" content="Avishek Kumar explores how AI can transform enterprise systems, ERP, project management and professional services, with hands-on work on AI agents and enterprise architecture." />
+<!-- Social sharing (LinkedIn / X / Facebook). Replace og:url and og:image after you deploy. -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Avishek Kumar · Where Enterprise Systems Meet AI" />
+<meta property="og:description" content="Enterprise AI, intelligent ERP, agentic systems and AI-driven automation: case studies, writing and research." />
+<meta property="og:url" content="https://your-domain.com/" />
+<meta property="og:image" content="https://your-domain.com/og-image.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<style>
+:root{
+  --bg:#F7F9FC; --surface:rgba(255,255,255,.72); --surface-solid:#fff;
+  --text:#101828; --muted:#667085; --line:rgba(16,24,40,.08);
+  --indigo:#6366F1; --violet:#7C3AED; --sky:#38BDF8;
+  --grad:linear-gradient(120deg,#38BDF8 0%,#6366F1 50%,#7C3AED 100%);
+  --shadow:0 1px 2px rgba(16,24,40,.04),0 12px 40px -12px rgba(99,102,241,.18);
+  --radius:22px;
+}
+[data-theme="dark"]{
+  --bg:#0B1020; --surface:rgba(20,27,48,.66); --surface-solid:#121830;
+  --text:#E8ECF6; --muted:#98A2B3; --line:rgba(255,255,255,.08);
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 16px 50px -16px rgba(99,102,241,.35);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:"Inter","Segoe UI Variable","Segoe UI",system-ui,-apple-system,sans-serif;
+  background:var(--bg);color:var(--text);line-height:1.65;-webkit-font-smoothing:antialiased;
+  transition:background .5s,color .5s;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1120px;margin:0 auto;padding:0 28px}
+::selection{background:rgba(99,102,241,.2)}
+:focus-visible{outline:2px solid var(--indigo);outline-offset:3px;border-radius:8px}
+
+/* ambient background */
+#field{position:fixed;inset:0;z-index:0;pointer-events:none}
+.orb{position:fixed;border-radius:50%;filter:blur(90px);opacity:.45;z-index:0;pointer-events:none;animation:drift 26s ease-in-out infinite alternate}
+.orb.a{width:520px;height:520px;background:#C7D2FE;top:-160px;right:-120px}
+.orb.b{width:440px;height:440px;background:#BAE6FD;top:40%;left:-180px;animation-delay:-8s}
+.orb.c{width:380px;height:380px;background:#E9D5FF;bottom:-140px;right:20%;animation-delay:-16s}
+[data-theme="dark"] .orb{opacity:.16}
+@keyframes drift{to{transform:translate(40px,30px) scale(1.08)}}
+main,header,footer{position:relative;z-index:1}
+
+/* nav */
+header{position:sticky;top:0;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  background:color-mix(in srgb,var(--bg) 70%,transparent);border-bottom:1px solid var(--line);z-index:10}
+nav{display:flex;align-items:center;justify-content:space-between;height:68px}
+.brand{font-weight:650;letter-spacing:-.01em;display:flex;align-items:center;gap:10px}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--grad);box-shadow:0 0 18px rgba(99,102,241,.7)}
+.links{display:flex;gap:28px;align-items:center;font-size:.94rem;color:var(--muted)}
+.links a:hover{color:var(--text)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:999px;font-weight:550;font-size:.95rem;
+  transition:transform .25s,box-shadow .25s,background .25s;cursor:pointer;border:0}
+.btn.primary{background:var(--text);color:var(--bg)}
+.btn.primary:hover{transform:translateY(-2px);box-shadow:0 10px 30px -10px rgba(99,102,241,.6)}
+.btn.ghost{border:1px solid var(--line);background:var(--surface);color:var(--text)}
+.btn.ghost:hover{transform:translateY(-2px)}
+.btn.small{padding:8px 16px;font-size:.88rem}
+#theme{background:none;border:1px solid var(--line);color:var(--muted);width:38px;height:38px;border-radius:50%;cursor:pointer;font-size:1rem}
+.menu{display:none}
+
+/* hero */
+.hero{min-height:calc(100vh - 68px);display:flex;flex-direction:column;justify-content:center;padding:80px 0}
+.eyebrow{font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;color:var(--indigo);font-weight:600;margin-bottom:22px}
+h1{font-size:clamp(2.6rem,6.4vw,5.2rem);line-height:1.04;letter-spacing:-.035em;font-weight:680;max-width:900px}
+.grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{font-size:clamp(1.08rem,1.6vw,1.28rem);color:var(--muted);max-width:640px;margin:28px 0 40px}
+.lead strong{color:var(--text);font-weight:550}
+.cta{display:flex;gap:14px;flex-wrap:wrap}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:64px;align-items:center}
+.chips span.lbl{font-size:.82rem;color:var(--muted);margin-right:6px}
+.chip{padding:7px 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-size:.86rem;backdrop-filter:blur(8px)}
+
+/* sections */
+section{padding:110px 0}
+.sec-head{max-width:680px;margin-bottom:56px}
+h2{font-size:clamp(2rem,3.6vw,2.9rem);letter-spacing:-.03em;line-height:1.1;font-weight:660;margin-bottom:16px}
+.sec-head p{color:var(--muted);font-size:1.08rem}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+
+/* pillars */
+.pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.pillar{padding:30px 26px;transition:transform .35s}
+.pillar:hover{transform:translateY(-4px)}
+.icon{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;margin-bottom:22px;
+  background:linear-gradient(135deg,rgba(56,189,248,.18),rgba(124,58,237,.18));color:var(--indigo)}
+.pillar h3{font-size:.84rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px}
+.pillar p{color:var(--muted);font-size:.95rem}
+
+/* journey */
+.about{display:grid;grid-template-columns:1.1fr 1fr;gap:64px;align-items:start}
+.about p{color:var(--muted);margin-bottom:18px;font-size:1.04rem}
+.about p strong{color:var(--text);font-weight:550}
+.journey{padding:34px}
+.step{display:flex;gap:18px;position:relative;padding-bottom:26px}
+.step:last-child{padding-bottom:0}
+.step:not(:last-child)::before{content:"";position:absolute;left:7px;top:22px;bottom:0;width:2px;background:linear-gradient(var(--sky),var(--violet));opacity:.35}
+.node{width:16px;height:16px;border-radius:50%;border:2px solid var(--indigo);background:var(--surface-solid);flex:none;margin-top:5px}
+.step:last-child .node{background:var(--grad);border:0;box-shadow:0 0 16px rgba(124,58,237,.6)}
+.step h4{font-size:1rem;font-weight:600}
+.step p{font-size:.9rem;color:var(--muted);margin:0}
+.stats{display:flex;gap:40px;margin-top:30px;flex-wrap:wrap}
+.stat b{display:block;font-size:2rem;letter-spacing:-.03em}
+.stat span{font-size:.85rem;color:var(--muted)}
+
+/* projects */
+.project{padding:48px;margin-bottom:28px}
+.p-top{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:8px}
+.num{font-size:.8rem;letter-spacing:.16em;color:var(--indigo);font-weight:600;text-transform:uppercase}
+.tag{font-size:.78rem;padding:5px 12px;border-radius:999px;background:rgba(99,102,241,.1);color:var(--indigo);font-weight:550}
+.project h3{font-size:clamp(1.6rem,2.6vw,2.1rem);letter-spacing:-.025em;line-height:1.15;margin:10px 0 14px}
+.project>p.sum{color:var(--muted);max-width:760px;font-size:1.05rem}
+.flow{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:34px 0}
+.f{padding:10px 18px;border-radius:14px;border:1px solid var(--line);background:var(--surface-solid);font-size:.9rem;font-weight:550;
+  position:relative;animation:glow 7.2s ease-in-out infinite}
+.arrow{color:var(--muted);opacity:.6}
+@keyframes glow{0%,12%{box-shadow:0 0 0 rgba(99,102,241,0);border-color:var(--line)}
+  5%{box-shadow:0 0 0 4px rgba(99,102,241,.14),0 8px 24px -8px rgba(99,102,241,.6);border-color:var(--indigo)}}
+.flow .f:nth-of-type(2){animation-delay:1.2s}.flow .f:nth-of-type(3){animation-delay:2.4s}
+.flow .f:nth-of-type(4){animation-delay:3.6s}.flow .f:nth-of-type(5){animation-delay:4.8s}.flow .f:nth-of-type(6){animation-delay:6s}
+.cols{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:10px}
+.cols h5{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.cols p,.cols li{font-size:.94rem;color:var(--text);opacity:.88}
+.cols ul{list-style:none}
+.cols li{padding-left:16px;position:relative;margin-bottom:6px}
+.cols li::before{content:"";position:absolute;left:0;top:.62em;width:6px;height:6px;border-radius:50%;background:var(--grad)}
+details{margin-top:30px;border-top:1px solid var(--line);padding-top:22px}
+summary{cursor:pointer;font-weight:550;color:var(--indigo);list-style:none;display:inline-flex;align-items:center;gap:8px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"↓";transition:transform .3s}
+details[open] summary::after{transform:rotate(180deg)}
+.deep{margin-top:20px;color:var(--muted);max-width:820px}
+.deep p{margin-bottom:14px}.deep strong{color:var(--text);font-weight:550}
+.principle{margin-top:26px;padding:18px 22px;border-radius:16px;border-left:3px solid var(--indigo);
+  background:linear-gradient(90deg,rgba(99,102,241,.08),transparent);font-weight:550}
+
+/* autonomy */
+.spectrum{padding:44px}
+.bar{height:8px;border-radius:999px;background:var(--grad);margin:30px 0 26px;position:relative;opacity:.85}
+.marks{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.mark h4{font-size:1.05rem;margin-bottom:6px}
+.mark p{font-size:.92rem;color:var(--muted)}
+.mark .who{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--indigo);font-weight:600;margin-bottom:8px;display:block}
+
+/* writing */
+.posts{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.post{padding:30px;display:flex;flex-direction:column;gap:12px;transition:transform .35s}
+.post:hover{transform:translateY(-4px)}
+.meta{font-size:.8rem;color:var(--muted)}
+.post h4{font-size:1.2rem;letter-spacing:-.015em;line-height:1.3}
+.post p{font-size:.93rem;color:var(--muted);flex:1}
+.soon{font-size:.78rem;color:var(--violet);font-weight:600}
+
+/* resume + contact */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.panel{padding:40px}
+.panel h3{font-size:1.5rem;letter-spacing:-.02em;margin-bottom:10px}
+.panel p{color:var(--muted);margin-bottom:24px}
+.roles{list-style:none;margin-bottom:26px}
+.roles li{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line);font-size:.95rem}
+.roles li span{color:var(--muted)}
+.contact{text-align:center;padding:80px 40px}
+.contact h2{max-width:720px;margin:0 auto 16px}
+.contact p{color:var(--muted);max-width:560px;margin:0 auto 34px}
+footer{padding:40px 0;border-top:1px solid var(--line);color:var(--muted);font-size:.86rem}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+
+.tl .role{display:grid;grid-template-columns:170px 1fr;gap:24px;padding:22px 0;border-bottom:1px solid var(--line)}
+.tl .role:first-child{padding-top:0}.tl .role:last-child{border-bottom:0;padding-bottom:0}
+.when{font-size:.85rem;color:var(--indigo);font-weight:600;padding-top:3px}
+.role h4{font-size:1.15rem}.ttl{font-size:.9rem;color:var(--text);opacity:.8;margin:2px 0 8px!important}
+.role p{color:var(--muted);font-size:.95rem;margin:0}
+.skills h5{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--indigo);margin:16px 0 4px}
+.skills p{margin:0!important;font-size:.94rem}
+@media (max-width:700px){.tl .role{grid-template-columns:1fr;gap:4px}.pillars[style]{grid-template-columns:1fr!important}}
+/* reveal */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity 1s cubic-bezier(.2,.7,.2,1),transform 1s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+
+@media (max-width:900px){
+  .pillars{grid-template-columns:1fr 1fr}.about,.split{grid-template-columns:1fr}
+  .cols,.posts,.marks{grid-template-columns:1fr}.project,.spectrum{padding:30px}
+  .links a.hide{display:none}
+}
+@media (max-width:560px){.pillars{grid-template-columns:1fr}section{padding:80px 0}.links{gap:14px}}
+</style>
+</head>
+<body>
+<canvas id="field" aria-hidden="true"></canvas>
+<div class="orb a"></div><div class="orb b"></div><div class="orb c"></div>
+
+<header>
+  <div class="wrap">
+    <nav aria-label="Main">
+      <a href="#top" class="brand"><span class="dot"></span>Avishek Kumar</a>
+      <div class="links">
+        <a href="#about" class="hide">About</a>
+        <a href="#work">Work</a>
+        <a href="#writing" class="hide">Writing</a>
+        <a href="#beyond" class="hide">Beyond work</a>
+        <a href="#resume" class="hide">Experience</a>
+        <button id="theme" type="button" aria-label="Toggle dark mode">◐</button>
+        <a href="#contact" class="btn primary small">Connect</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <p class="eyebrow reveal">Enterprise AI · Intelligent ERP · Agentic Systems</p>
+      <h1 class="reveal">Where enterprise systems<br /><span class="grad">meet AI.</span></h1>
+      <p class="lead reveal">I'm Avishek Kumar, an AI and enterprise technology professional with <strong>15+ years</strong> across software engineering, SAP/ERP transformation and cloud. Today I build <strong>Agentic AI experiences</strong> that turn complex ERP and professional services workflows into simple, intelligent ones.</p>
+      <div class="cta reveal">
+        <a href="#work" class="btn primary">Explore my work →</a>
+        <a href="#about" class="btn ghost">My story</a>
+      </div>
+      <div class="chips reveal">
+        <span class="lbl">Currently exploring</span>
+        <span class="chip">AI Agents</span><span class="chip">MCP</span><span class="chip">Enterprise AI</span>
+        <span class="chip">AI + ERP</span><span class="chip">Human-in-the-loop design</span><span class="chip">Automation</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PILLARS -->
+  <section style="padding-top:20px">
+    <div class="wrap">
+      <div class="pillars">
+        <div class="card pillar reveal"><div class="icon">◇</div><h3>Enterprise AI</h3><p>Intelligent systems designed around real business processes, not isolated demos.</p></div>
+        <div class="card pillar reveal"><div class="icon">⬡</div><h3>AI + ERP</h3><p>How AI can reshape planning, finance, delivery and enterprise applications.</p></div>
+        <div class="card pillar reveal"><div class="icon">✦</div><h3>AI Products</h3><p>Moving from AI concepts to agents, prototypes and practical implementations.</p></div>
+        <div class="card pillar reveal"><div class="icon">⌘</div><h3>Architecture</h3><p>Connecting models, enterprise data, systems, APIs, workflows and people.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="wrap about">
+      <div>
+        <p class="eyebrow reveal">About</p>
+        <h2 class="reveal">From enterprise transformation to Enterprise AI.</h2>
+        <p class="reveal">My career has been shaped by solving complex business and technology problems. I have worked on project management challenges across <strong>professional services, oil &amp; gas, construction, real estate, manufacturing, healthcare and pharmaceuticals</strong>.</p>
+        <p class="reveal">I have also been part of large SAP-centered technology transformation programs as a <strong>senior consultant, solution architect and integration lead</strong>. That taught me that enterprise technology is never just about technology. It sits where business processes, people, data, systems and decisions meet.</p>
+        <p class="reveal"><strong>Why AI?</strong> I'm amazed by what AI can do: how it changes software development, how it can address today's industry challenges, and the productivity and efficiency gains it brings. I want to go beyond using AI tools, to understand AI deeply, build with it hands-on, and bring it into the systems businesses already depend on.</p>
+        <p class="reveal">Ultimately, I believe the opportunity is bigger than productivity. Used thoughtfully, AI can help people solve difficult problems and <strong>contribute to the broader development of society</strong>.</p>
+        <div class="stats reveal">
+          <div class="stat"><b class="grad">15+</b><span>years in enterprise technology</span></div>
+          <div class="stat"><b class="grad">7</b><span>industries</span></div>
+          <div class="stat"><b class="grad">5</b><span>enterprise AI initiatives</span></div>
+        </div>
+      </div>
+      <div class="card journey reveal" aria-label="Career journey">
+        <div class="step"><span class="node"></span><div><h4>2012 · Project systems consultant</h4><p>SAP PS implementations: planning, result analysis, revenue recognition</p></div></div>
+        <div class="step"><span class="node"></span><div><h4>2014–2018 · Implementations &amp; rollouts</h4><p>Project financials, integrations and global rollouts</p></div></div>
+        <div class="step"><span class="node"></span><div><h4>2018 · Global S/4HANA transformations</h4><p>SAP PS, PPM and CPM across US, European and Indian customers</p></div></div>
+        <div class="step"><span class="node"></span><div><h4>2021 · Enterprise AI at Microsoft</h4><p>Generative and Agentic AI for ERP and professional services</p></div></div>
+        <div class="step"><span class="node"></span><div><h4>Enterprise AI</h4><p>AI inside real business workflows: where I'm heading</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ASPIRATION -->
+  <section style="padding-top:20px;padding-bottom:40px">
+    <div class="wrap">
+      <div class="card spectrum reveal" style="text-align:center">
+        <p class="eyebrow">Where I'm heading</p>
+        <h2 style="max-width:860px;margin:0 auto 18px;font-size:clamp(1.5rem,2.6vw,2.1rem);font-weight:560">"I'm fascinated by the intersection of <span class="grad">AI and enterprise technology</span>. My goal is to deeply understand AI, build meaningful AI products, and explore how intelligent systems can transform ERP, project management, and professional services."</h2>
+        <div class="chips" style="justify-content:center;margin-top:26px">
+          <span class="chip">Intelligent Enterprise</span><span class="chip">Generative AI</span><span class="chip">Agentic AI</span>
+          <span class="chip">Enterprise AI Products</span><span class="chip">ERP Transformation</span><span class="chip">Professional Services</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section id="work">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow reveal">Selected work</p>
+        <h2 class="reveal">Three agents. Three levels of autonomy.</h2>
+        <p class="reveal">Each project applies AI to a different enterprise function: engineering, delivery and commercial. In each one, the autonomy and controls match the risk of the process.</p>
+      </div>
+
+      <!-- Project 1 -->
+      <article class="card project reveal">
+        <div class="p-top"><span class="num">01 · Engineering</span><span class="tag">Autonomous agent + MCP</span></div>
+        <h3>Autonomous, change-aware regression testing</h3>
+        <p class="sum">An AI Test Automation Agent that understands what is changing, selects the right regression tests, runs them, logs bugs and notifies teams, end to end with no manual steps.</p>
+        <div class="flow" aria-label="Agent workflow">
+          <span class="f">Change</span><span class="arrow">→</span><span class="f">Understand</span><span class="arrow">→</span>
+          <span class="f">Select</span><span class="arrow">→</span><span class="f">Test</span><span class="arrow">→</span>
+          <span class="f">Detect</span><span class="arrow">→</span><span class="f">Act</span>
+        </div>
+        <div class="cols">
+          <div><h5>The challenge</h5><p>Regression on a legacy tool was hard to manage. Quarterly and ad-hoc cycles needed manual effort from roughly 10–15 service-line teams, slowing major upgrades to production.</p></div>
+          <div><h5>The approach</h5><ul><li>Reads PRs, change requests, bugs, features and tech debt in Azure DevOps</li><li>Selects the relevant regression suite</li><li>MCP exposes skills to the agent</li></ul></div>
+          <div><h5>The outcome</h5><ul><li>Automatic execution and result capture</li><li>Bugs created automatically</li><li>Teams notified, zero intervention</li></ul></div>
+        </div>
+        <details>
+          <summary>Read the architecture</summary>
+          <div class="deep">
+            <p>At the center is an <strong>AI Test Automation Agent</strong> that orchestrates the regression lifecycle. <strong>MCP is the capability layer</strong>: it exposes skills that let the agent work with engineering systems, the test suite and the enterprise application.</p>
+            <p>The cycle starts from <strong>change intelligence</strong>, understanding what is moving toward deployment, and continues through regression selection, autonomous execution, result analysis, defect creation and team notification.</p>
+            <div class="principle">AI shouldn't only give answers. It should understand enterprise context and take part in end-to-end workflows.</div>
+          </div>
+        </details>
+      </article>
+
+      <!-- Project 2 -->
+      <article class="card project reveal">
+        <div class="p-top"><span class="num">02 · Delivery</span><span class="tag">Conversational + human-in-the-loop</span></div>
+        <h3>AI Delivery Agents for project managers</h3>
+        <p class="sum">A Copilot-style agent that lets project managers plan, forecast, staff and manage projects in natural language, and proactively flags projects that are falling behind.</p>
+        <div class="flow" aria-label="Agent workflow">
+          <span class="f">Ask</span><span class="arrow">→</span><span class="f">Interpret</span><span class="arrow">→</span>
+          <span class="f">Propose</span><span class="arrow">→</span><span class="f">Confirm</span><span class="arrow">→</span>
+          <span class="f">Update</span><span class="arrow">→</span><span class="f">Alert</span>
+        </div>
+        <div class="cols">
+          <div><h5>The challenge</h5><p>Every action was UI-driven and unintuitive. Project data went stale, which led to inaccurate health reporting to leadership, project hygiene issues and incorrect financial reporting.</p></div>
+          <div><h5>What it can do</h5><ul><li>Dates, schedules, team and responsibilities</li><li>Staffing and finding capabilities</li><li>Project end-date extensions and team-member changes</li><li>Resource-mix cost changes, forecasts, EAC and ETC</li></ul></div>
+          <div><h5>Designed for trust</h5><ul><li>Every data change confirmed by the user</li><li>Proactive alerts tied to each project's risk register</li><li>PMs manage projects, not screens</li></ul></div>
+        </div>
+        <details>
+          <summary>Read the full story</summary>
+          <div class="deep">
+            <p>The real problem wasn't missing data. It was a <strong>usability problem at the front line</strong> that grew into a <strong>data quality, governance and financial accuracy problem</strong> at the leadership level.</p>
+            <p>By letting project managers describe what they want instead of navigating screens, the agent goes after the root cause. Updates get easier, so data stays current. Built-in logic linked to each project's risk register lets the agent <strong>reach out first</strong> when updates are overdue.</p>
+            <div class="principle">The agent proposes and alerts. The human decides.</div>
+          </div>
+        </details>
+      </article>
+
+      <!-- Project 3 -->
+      <article class="card project reveal">
+        <div class="p-top"><span class="num">03 · Commercial</span><span class="tag">Conversational + built-in validation</span></div>
+        <h3>Deal Management Agent</h3>
+        <p class="sum">An agent that speeds up the deal lifecycle, covering catalog onboarding, custom offers and amendments, while building governance into the workflow.</p>
+        <div class="flow" aria-label="Validation workflow">
+          <span class="f">Describe</span><span class="arrow">→</span><span class="f">De-duplicate</span><span class="arrow">→</span>
+          <span class="f">Billing</span><span class="arrow">→</span><span class="f">Pricing</span><span class="arrow">→</span>
+          <span class="f">Provisioning</span><span class="arrow">→</span><span class="f">Review</span>
+        </div>
+        <div class="cols">
+          <div><h5>The challenge</h5><p>Fast-changing business models need flexibility beyond standard offerings. Teams faced slow SKU onboarding, duplicate SKUs, multi-team approvals and, hardest of all, contractual amendments.</p></div>
+          <div><h5>Who felt it</h5><ul><li>Sales teams</li><li>Deal desk</li><li>Finance</li><li>Catalog owners</li></ul></div>
+          <div><h5>The solution</h5><ul><li>Easy SKU, product and catalog creation with duplication checks</li><li>Custom offers in natural language</li><li>Amendments pre-validated before submission</li></ul></div>
+        </div>
+        <details>
+          <summary>Read the full story</summary>
+          <div class="deep">
+            <p>Before, agility and governance pulled against each other: flexibility meant risk, and control meant delay. Every new catalog item now goes through a layered review: a <strong>duplication check</strong>, then <strong>validation against billing, pricing and provisioning</strong>, then <strong>review by partner teams</strong>.</p>
+            <p>Amendments, the most error-prone step, are <strong>validated before they reach backend systems</strong>, so problems are caught early, when they cost least to fix.</p>
+            <div class="principle">Make the right thing the easy thing. When validation is automatic, speed and quality stop being trade-offs.</div>
+          </div>
+        </details>
+      </article>
+    </div>
+  </section>
+
+  <!-- MORE AI WORK -->
+  <section style="padding-top:0">
+    <div class="wrap">
+      <p class="eyebrow reveal">More Enterprise AI work</p>
+      <div class="split">
+        <article class="card panel reveal">
+          <div class="p-top"><span class="num">04 · ERP</span><span class="tag">Agent + approvals</span></div>
+          <h3>Enterprise ERP Agent</h3>
+          <p>An AI agent for user-access and security questions in ERP, with approval automation. Users get answers and request access in plain language, and approvals no longer wait in manual queues.</p>
+        </article>
+        <article class="card panel reveal">
+          <div class="p-top"><span class="num">05 · Decision support</span><span class="tag">Copilot + simulation</span></div>
+          <h3>AI Copilot for Project Management</h3>
+          <p>A Copilot for project managers covering project insights, <strong>automated cost-overrun analysis</strong> and root-cause identification. I designed the MVP using Azure-hosted AI, including AI-powered simulation to test "what if" decisions before making them.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- PHILOSOPHY -->
+  <section style="padding-top:40px">
+    <div class="wrap">
+      <div class="card spectrum reveal">
+        <p class="eyebrow">How I think about Enterprise AI</p>
+        <h2>Match autonomy to risk.</h2>
+        <p style="color:var(--muted);max-width:700px">Not every workflow should get the same level of AI independence. The design question isn't "can AI do this?" It's "how much should AI decide on its own here?"</p>
+        <div class="bar" role="img" aria-label="Spectrum from human-led to autonomous"></div>
+        <div class="marks">
+          <div class="mark"><span class="who">Human decides</span><h4>Delivery Agents</h4><p>Financial and project data: the agent proposes, and the PM confirms every change.</p></div>
+          <div class="mark"><span class="who">Validation built in</span><h4>Deal Management</h4><p>Commercial changes: automated checks plus review by human owners.</p></div>
+          <div class="mark"><span class="who">Fully autonomous</span><h4>Regression Testing</h4><p>Engineering validation: the agent runs the whole cycle by itself.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WRITING -->
+  <section id="writing">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow reveal">Writing</p>
+        <h2 class="reveal">Thinking out loud about Enterprise AI.</h2>
+        <p class="reveal">Articles, explainers and lessons from building with AI. Each full piece lives here and gets shared on LinkedIn.</p>
+      </div>
+      <div class="posts">
+        <a href="#" class="card post reveal"><span class="meta">Enterprise AI · Architecture</span><h4>Match autonomy to risk: designing enterprise AI agents</h4><p>Why one AI pattern doesn't fit every business process.</p><span class="soon">Coming soon</span></a>
+        <a href="#" class="card post reveal"><span class="meta">Agents · MCP</span><h4>MCP explained for enterprise architects</h4><p>How exposing skills to agents changes the way enterprise systems integrate.</p><span class="soon">Coming soon</span></a>
+        <a href="#" class="card post reveal"><span class="meta">AI + ERP</span><h4>When the system adapts to the user</h4><p>What conversational AI means for complex ERP and project systems.</p><span class="soon">Coming soon</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="resume" style="padding-top:40px">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow reveal">Experience</p>
+        <h2 class="reveal">15+ years, one thread: making complex enterprise work simpler.</h2>
+        <p class="reveal">From implementing project systems for global customers to building AI agents on top of them.</p>
+      </div>
+      <div class="card panel reveal" style="margin-bottom:22px">
+        <div class="tl">
+          <div class="role"><div class="when">Dec 2021 – Present</div><div><h4>Microsoft</h4><p class="ttl">Product Manager / Senior Software Engineer · Enterprise AI &amp; Agentic AI</p>
+            <p>Applying Generative and Agentic AI to ERP and professional services. Built the Delivery Agent and ERP Agent, worked on complex project-financial AI scenarios (EAC vs. forecast), and designed an AI Copilot MVP for cost-overrun analysis.</p></div></div>
+          <div class="role"><div class="when">Sep 2018 – Dec 2021</div><div><h4>Deloitte Consulting</h4><p class="ttl">Senior Consultant · SAP PS / PPM / CPM</p>
+            <p>End-to-end S/4HANA implementations and global programs for periodic forecasting, project progress reporting, and revenue accounting. Capital and commercial project solutions integrating investment, asset, CRM and order management.</p></div></div>
+          <div class="role"><div class="when">Nov 2015 – Aug 2018</div><div><h4>Tata Consultancy Services</h4><p class="ttl">Consultant · SAP Project System</p>
+            <p>SAP PS implementations, support and rollouts, with requirements analysis and solution design for global stakeholders.</p></div></div>
+          <div class="role"><div class="when">Jun 2014 – Nov 2015</div><div><h4>Bramasol</h4><p class="ttl">Consultant · SAP Project System</p>
+            <p>Project financials, result analysis, revenue recognition, and integrations between SAP and external systems.</p></div></div>
+          <div class="role"><div class="when">Apr 2012 – May 2014</div><div><h4>Highbar Technologies</h4><p class="ttl">Consultant · Project System</p>
+            <p>End-to-end SAP PS implementations, SAP integration with Oracle CRM, and custom planning solutions.</p></div></div>
+        </div>
+      </div>
+      <div class="pillars" style="grid-template-columns:repeat(3,1fr)">
+        <div class="card pillar reveal"><h3 class="grad">60–80 hrs</h3><p>Effort saved per month through technology and process improvements</p></div>
+        <div class="card pillar reveal"><h3 class="grad">400+</h3><p>Active projects supported by revenue and forecasting improvements</p></div>
+        <div class="card pillar reveal"><h3 class="grad">Global</h3><p>Customers across the US, Europe and India</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS + EDUCATION -->
+  <section style="padding-top:20px">
+    <div class="wrap split">
+      <div class="card panel reveal">
+        <p class="eyebrow">Expertise</p>
+        <h3>What I work with</h3>
+        <div class="skills">
+          <h5>AI</h5><p>Agentic AI · Generative AI · AI agents · MCP · Workflow automation · Decision support · Prompt engineering</p>
+          <h5>Enterprise</h5><p>SAP S/4HANA · SAP PS, PPM, CPM · SAP BW · ABAP · Enterprise integration</p>
+          <h5>Cloud &amp; engineering</h5><p>Microsoft Azure · Solution architecture · Technical design · Production support</p>
+          <h5>Delivery</h5><p>Agile &amp; Lean · Requirements engineering · Stakeholder and risk management</p>
+        </div>
+      </div>
+      <div class="card panel reveal">
+        <p class="eyebrow">Education</p>
+        <h3>Engineering roots, management depth</h3>
+        <ul class="roles">
+          <li>Master's · Project Engineering &amp; Management <span>NICMAR</span></li>
+          <li>B.E. · Mechanical Engineering <span>Jaipur Engineering College</span></li>
+        </ul>
+        <p>Recognized with a merit certificate for academic excellence.</p>
+        <div class="cta"><a href="resume.pdf" class="btn primary small" download>Download resume</a>
+        <a href="https://www.linkedin.com/in/avishek-kumar-40413015" target="_blank" rel="noopener" class="btn ghost small">LinkedIn ↗</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESEARCH -->
+  <section id="research" style="padding-top:20px">
+    <div class="wrap">
+      <div class="card panel reveal">
+        <p class="eyebrow">Research &amp; papers</p>
+        <h3>Ideas worth writing down properly</h3>
+        <p>Papers, technical studies and experiments on Enterprise AI, agentic architectures and AI in ERP. Each one will include an abstract, method, findings and a downloadable PDF.</p>
+        <span class="soon">First publication in progress</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- BEYOND WORK -->
+  <section id="beyond" style="padding-top:40px">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow reveal">Beyond work</p>
+        <h2 class="reveal">The person behind the architecture.</h2>
+        <p class="reveal">Curiosity doesn't switch off after work. Here's what keeps me learning, thinking and smiling.</p>
+      </div>
+      <div class="pillars">
+        <div class="card pillar reveal"><div class="icon">♞</div><h3>Chess</h3><p>Thinking several moves ahead: the same habit good architecture needs.</p></div>
+        <div class="card pillar reveal"><div class="icon">🏸</div><h3>Badminton</h3><p>Speed, reflexes and a good reset from the screen.</p></div>
+        <div class="card pillar reveal"><div class="icon">📚</div><h3>Always learning</h3><p>Reading about new technology and taking courses to keep building depth.</p></div>
+        <div class="card pillar reveal"><div class="icon">✨</div><h3>Fiction &amp; family</h3><p>Fiction and fantasy films, and the best time of day: playing with my little daughter.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" style="padding-top:40px">
+    <div class="wrap">
+      <div class="card contact reveal">
+        <p class="eyebrow">Let's connect</p>
+        <h2>Interested in Enterprise AI, ERP or <span class="grad">agentic systems?</span></h2>
+        <p>I'm always happy to talk about AI in the enterprise, compare notes on architecture, or explore ideas together.</p>
+        <div class="cta" style="justify-content:center">
+          <a href="https://www.linkedin.com/in/avishek-kumar-40413015" target="_blank" rel="noopener" class="btn primary">Connect on LinkedIn ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap"><span>© <span id="yr"></span> Avishek Kumar</span><span>Where enterprise systems meet AI.</span></div>
+</footer>
+
+<script>
+(function(){
+  // Theme: system preference first, then manual toggle
+  var root=document.documentElement, mq=window.matchMedia('(prefers-color-scheme: dark)');
+  root.setAttribute('data-theme', mq.matches?'dark':'light');
+  document.getElementById('theme').addEventListener('click',function(){
+    root.setAttribute('data-theme', root.getAttribute('data-theme')==='dark'?'light':'dark');
+  });
+  document.getElementById('yr').textContent=new Date().getFullYear();
+
+  // Gentle reveal on scroll
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(function(el,i){el.style.transitionDelay=(i%4)*80+'ms';io.observe(el);});
+
+  // Calm neural field: slow particles that softly connect
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var c=document.getElementById('field'), x=c.getContext('2d'), W,H,P=[], m={x:-999,y:-999};
+  function size(){W=c.width=innerWidth*devicePixelRatio;H=c.height=innerHeight*devicePixelRatio;c.style.width=innerWidth+'px';c.style.height=innerHeight+'px';
+    var n=Math.min(70,Math.floor(innerWidth*innerHeight/22000));P=[];
+    for(var i=0;i<n;i++)P.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.25});}
+  addEventListener('resize',size); addEventListener('pointermove',function(e){m.x=e.clientX*devicePixelRatio;m.y=e.clientY*devicePixelRatio;});
+  size();
+  (function draw(){
+    x.clearRect(0,0,W,H);
+    var dark=root.getAttribute('data-theme')==='dark', col=dark?'165,180,252':'99,102,241', R=140*devicePixelRatio;
+    for(var i=0;i<P.length;i++){var p=P[i];p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;
+      var dm=Math.hypot(p.x-m.x,p.y-m.y); if(dm<R*1.3){p.x+=(p.x-m.x)/dm*.4;p.y+=(p.y-m.y)/dm*.4;}
+      x.fillStyle='rgba('+col+','+(dark?.5:.35)+')';x.beginPath();x.arc(p.x,p.y,1.6*devicePixelRatio,0,7);x.fill();
+      for(var j=i+1;j<P.length;j++){var q=P[j],d=Math.hypot(p.x-q.x,p.y-q.y);
+        if(d<R){x.strokeStyle='rgba('+col+','+((1-d/R)*(dark?.22:.16))+')';x.lineWidth=devicePixelRatio;x.beginPath();x.moveTo(p.x,p.y);x.lineTo(q.x,q.y);x.stroke();}}}
+    requestAnimationFrame(draw);
+  })();
+})();
+</script>
+</body>
+</html>
